@@ -74,4 +74,15 @@ public class Article {
     public void setAuthor(User author) {
         this.author = author;
     }
+
+    @Transient
+    public String getSummary() {
+        if (this.getContent().length() <= 500) {
+            return this.getContent();
+        }
+        else {
+            return this.getContent().substring(0, 500) + "...";
+        }
+
+    }
 }
