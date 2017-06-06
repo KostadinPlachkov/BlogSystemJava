@@ -7,6 +7,7 @@ import Blog.repository.ArticleRepository;
 import Blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -60,9 +61,21 @@ public class ArticleController {
         if (!this.articleRepository.exists(id)) {
             return "redirect:/";
         }
+
+        if (!(SecurityContextHolder.getContext().getAuthentication()
+            instanceof AnonymousAuthenticationToken)) {
+            UserDetails user = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+
+            User userEntity = this.userRepository.findByEmail(user.getUsername());
+            model.addAttribute("user", userEntity);
+        }
         Article article = this.articleRepository.findOne(id);
-        model.addAttribute("view", "article/details");
+
         model.addAttribute("article", article);
+        model.addAttribute("view", "article/details");
         return "base-layout";
     }
 
@@ -75,7 +88,7 @@ public class ArticleController {
         Article article = this.articleRepository.findOne(id);
 
         if (!this.isUserAuthorOrAdmin(article)) {
-            return "redirect:/";
+            return "redirect:/article" + id;
         }
         model.addAttribute("article", article);
         model.addAttribute("view", "article/edit");
@@ -92,7 +105,7 @@ public class ArticleController {
         Article article = this.articleRepository.findOne(id);
 
         if (!this.isUserAuthorOrAdmin(article)) {
-            return "redirect:/";
+            return "redirect:/article" + id;
         }
 
         article.setTitle(model.getTitle());
@@ -111,7 +124,7 @@ public class ArticleController {
         Article article = this.articleRepository.findOne(id);
 
         if (!this.isUserAuthorOrAdmin(article)) {
-            return "redirect:/";
+            return "redirect:/article" +id;
         }
         model.addAttribute("article", article);
         model.addAttribute("view", "article/delete");
@@ -127,7 +140,7 @@ public class ArticleController {
         Article article = this.articleRepository.findOne(id);
 
         if (!this.isUserAuthorOrAdmin(article)) {
-            return "redirect:/";
+            return "redirect:/article" + id;
         }
         this.articleRepository.delete(article);
         return "redirect:/";
