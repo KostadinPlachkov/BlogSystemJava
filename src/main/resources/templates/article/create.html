@@ -1,7 +1,7 @@
 <main>
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <form class="form-horizontal" th:action="@{/article/create}" method="POST">
+            <form class="form-horizontal" th:action="@{/article/create}" enctype="multipart/form-data" method="POST">
                 <fieldset>
                     <legend>New Post</legend>
 
@@ -17,6 +17,13 @@
                         <label class="col-sm-4 control-label" for="article_content">Content</label>
                         <div class="col-sm-6">
                             <textarea class="form-control" rows="6" id="article_content" name="content"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="article_content">Article Image</label>
+                        <div class="col-sm-6">
+                            <input type="file" class="form-control" id="image" name="image" />
                         </div>
                     </div>
 

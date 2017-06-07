@@ -15,7 +15,7 @@ public class Article {
     private String content;
     private Date date;
     private User author;
-
+    private String imagePath;
 
     public Article(String title, String content, User author) {
         this.title = title;
@@ -26,6 +26,13 @@ public class Article {
 
     public Article() {
         this.date = new Date();
+    }
+
+    public Article(String title, String content, User author, String imagePath) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.imagePath = imagePath;
     }
 
     @Id
@@ -73,6 +80,14 @@ public class Article {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Transient
