@@ -14,16 +14,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="article_content">Content</label>
+                        <label class="col-sm-4 control-label" for="content">Content</label>
                         <div class="col-sm-6">
-                            <textarea class="form-control" rows="6" id="article_content" name="content"></textarea>
+                            <textarea id="content" name="content"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="article_content">Article Image</label>
+                        <label class="col-sm-4 control-label" for="image">Article Image</label>
                         <div class="col-sm-6">
-                            <input type="file" class="form-control" id="image" name="image" />
+                            <input type="file" id="image" class="form-control" name="image" />
                         </div>
                     </div>
 
@@ -38,3 +38,30 @@
         </div>
     </div>
 </main>
+<!-- TODO: Add max size image <= 1 MB -->
+<!--<script type="text/javascript">-->
+
+    <!--//this code will be executed when a new file is selected-->
+    <!--$('#image').bind('change', function () {-->
+
+        <!--//converts the file size from bytes to MB-->
+        <!--var fileSize = this.files[0].size / 1024 / 1024;-->
+
+        <!--//gets the full file name including the extension-->
+        <!--var fileName = this.files[0].name;-->
+
+        <!--//finds where the extension starts-->
+        <!--var dotPosition = fileName.lastIndexOf(".");-->
+
+        <!--//gets only the extension-->
+        <!--var fileExt = fileName.substring(dotPosition);-->
+
+        <!--//checks whether the file is .png and less than 1 MB-->
+        <!--if (fileSize <=  1 && fileExt === ".png" && fileExt === ".jpg" && fileExt === ".jpeg") {-->
+            <!--//successfully validated-->
+        <!--}-->
+    <!--});-->
+<!--</script>-->
+<script type="text/javascript" >
+    CKEDITOR.replace( 'content' );
+</script>

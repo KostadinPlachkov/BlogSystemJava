@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by Kostadin on 04-Jun-17.
@@ -49,26 +51,33 @@ public class ArticleController {
                 .getAuthentication()
                 .getPrincipal();
 
-        String databaseImagePath;
+        User userEntity = this.userRepository.findByEmail(userDetails.getUsername());
+        String databaseImagePath = null;
         String[] allowedContentType = {
-                "images/png",
-                "images/jpg",
-                "images/jpeg"
+                "image/png",
+                "image/jpg",
+                "image/jpeg"
         };
 
-        // TODO: finish image upload.
+        boolean contentTypeIsAllowed = Arrays.asList(allowedContentType)
+                .contains(articleBindingModel.getImage().getContentType());
 
-        User userEntity = this.userRepository.findByEmail(userDetails.getUsername());
-        String imagesPath = "\\src\\main\\resources\\static\\images\\";
-        String imagesPathRoot = System.getProperty("user.dir");
-        String imagesSaveDirectory = imagesPathRoot + imagesPath;
-        String fileName = articleBindingModel.getImage().getOriginalFilename();
-        String savePath = imagesSaveDirectory + fileName;
+        if (contentTypeIsAllowed) {
+            String imagesPath = "\\src\\main\\resources\\static\\images\\";
+            String imagesPathRoot = System.getProperty("user.dir");
+            String imagesSaveDirectory = imagesPathRoot + imagesPath;
+            String fileName = articleBindingModel.getImage().getOriginalFilename();
+            String savePath = imagesSaveDirectory + fileName;
 
-        File imageFile = new File(savePath);
+            File imageFile = new File(savePath);
 
-        databaseImagePath = "/images/" + fileName;
-
+            try {
+                articleBindingModel.getImage().transferTo(imageFile);
+                databaseImagePath = "/images/" + fileName;
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         Article article = new Article(
                 articleBindingModel.getTitle(),
                 articleBindingModel.getContent(),

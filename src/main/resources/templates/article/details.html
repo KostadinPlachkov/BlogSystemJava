@@ -7,8 +7,11 @@
                         <h2 th:text="${article.title}"></h2>
                     </header>
 
-                    <p th:text="${article.content}"> </p>
+                    <p th:utext="${article.content}"> </p>
 
+                    <div>
+                        <img th:if="${article.imagePath} != null" th:src="${article.imagePath}" width="500px" alt="Article Image" />
+                    </div>
                     <small class="author" th:text="${article.author.fullName}"></small>
 
                     <footer>
