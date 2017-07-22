@@ -1,2 +1,2 @@
 # KPBlog
-Blog System
+Blog System.
